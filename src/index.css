@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+/* Global Security Overrides */
+*, *::before, *::after {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-user-drag: none !important;
+}
+
+/* Crash the layout structure cleanly if print/PDF save is triggered */
+@media print {
+  body {
+    display: none !important;
+  }
+}
+
+pre, code {
+  font-family: 'Fira Code', 'Courier New', monospace !important;
+}
