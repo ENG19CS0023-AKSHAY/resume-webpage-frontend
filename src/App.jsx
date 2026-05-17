@@ -84,7 +84,7 @@ const App = () => {
     setFile(fileToUpload)
     setStep(2)
 
-    const tryUrls = ['/upload', 'http://localhost:3000/upload']
+    const tryUrls = ['http://localhost:3000/upload']
     let resp = null
     let lastErr = null
     
@@ -134,7 +134,9 @@ const App = () => {
       contact: {
         email: parsedObj.email || fallback.email || '',
         phone: parsedObj.phone || fallback.phone || ''
-      }
+      },
+      linkedIn : parsedObj.linkedin || '',
+      github : parsedObj.github || ''
     }
 
     setResumeData(newResume)
@@ -142,6 +144,13 @@ const App = () => {
   }
 
   const activeTheme = themes[themeColor]
+
+  // Helper function to ensure URLs have proper protocol
+  const ensureProtocol = (url) => {
+    if (!url) return ''
+    if (url.startsWith('http://') || url.startsWith('https://')) return url
+    return `https://${url}`
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-700">
@@ -386,12 +395,20 @@ const App = () => {
 
                       <div className="pt-6 flex gap-4 border-t border-slate-800/50">
                         {resumeData.contact.email && (
-                          <a href={`mailto:${resumeData.contact.email}`} className="text-slate-600 hover:text-white transition-colors">
+                          <a href={`mailto:${resumeData.contact.email}`} className="text-slate-600 hover:text-white transition-colors" title="Email">
                             <Mail size={16} />
                           </a>
                         )}
-                        <Linkedin size={16} className="text-slate-600 hover:text-white cursor-pointer transition-colors" />
-                        <Github size={16} className="text-slate-600 hover:text-white cursor-pointer transition-colors" />
+                        {resumeData.linkedIn && resumeData.linkedIn.trim() && (
+                          <a href={ensureProtocol(resumeData.linkedIn)} target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-white transition-colors" title="LinkedIn">
+                            <Linkedin size={16} />
+                          </a>
+                        )}
+                        {resumeData.github && resumeData.github.trim() && (
+                          <a href={ensureProtocol(resumeData.github)} target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-white transition-colors" title="GitHub">
+                            <Github size={16} />
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
